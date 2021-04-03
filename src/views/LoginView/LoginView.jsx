@@ -1,40 +1,49 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import authOperations from '../../redux/auth/auth-operations';
 import styles from './LoginView.module.css';
 import Slide from '@material-ui/core/Slide';
 
-// const styles = {
-//   form: {
-//     width: 320,
-//   },
-//   label: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     marginBottom: 15,
-//   },
+// const mapDispatchToProps = {
+//   onLogin: authOperations.logIn,
 // };
 
-class LoginView extends Component {
-  state = {
-    email: '',
-    password: '',
+// export default connect(null, mapDispatchToProps)(LoginView);
+
+export default function LoginView() {
+  // state = {
+  //   email: '',
+  //   password: '',
+  // };
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // handleChange = ({ target: { name, value } }) => {
+  //   this.setState({ [name]: value });
+  // };
+  const handleChangeEmail = ({ target }) => {
+    setEmail(target.value);
+  };
+  const handleChangePassword = ({ target }) => {
+    setPassword(target.value);
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   this.props.onLogin(this.state);
+  //   this.setState({ name: '', email: '', password: '' });
+  // };
+  //  const { email, password } = this.state;
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onLogin(this.state);
+    dispatch(authOperations.logIn({ email, password }));
 
-    this.setState({ name: '', email: '', password: '' });
-  };
-
-  render() {
-    const { email, password } = this.state;
+    setEmail('');
+    setPassword('');
+  }; 
 
     return (
       <div className={styles.container}>
@@ -43,7 +52,7 @@ class LoginView extends Component {
           </Slide>
 
         <form
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
           className={styles.form}
           autoComplete="off"
         >
@@ -55,7 +64,7 @@ class LoginView extends Component {
               type="email"
               name="email"
               value={email}
-              onChange={this.handleChange}
+              onChange={handleChangeEmail}
             />
 
           <label className={styles.label}>
@@ -66,7 +75,7 @@ class LoginView extends Component {
               type="password"
               name="password"
               value={password}
-              onChange={this.handleChange}
+              onChange={handleChangePassword}
             />
 
           <button className={styles.button} type="submit">Log in</button>
@@ -74,10 +83,4 @@ class LoginView extends Component {
       </div>
     );
   }
-}
 
-const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
-};
-
-export default connect(null, mapDispatchToProps)(LoginView);

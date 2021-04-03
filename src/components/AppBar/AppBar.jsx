@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navigation from '../Navigation/Navigation';
 import UserMenu from '../UserMenu/UserMenu';
 import AuthNav from '../AuthNav/AuthNav';
@@ -14,19 +14,20 @@ const styles = {
   },
 };
 
-const AppBarNav = ({ isAuthenticated }) => (
+// const mapStateToProps = state => ({
+//   isAuthenticated: authSelectors.getIsAuthenticated(state),
+// });
+
+// export default connect(mapStateToProps)(AppBarNav);
+
+export default function AppBarNav() {
+  const isLoggedIn = useSelector(authSelectors.getIsAuthenticated)
+return (
   <AppBar>
    <header style={styles.header}>
     <Navigation />
-    {isAuthenticated ? <UserMenu /> : <AuthNav />}
+    {isLoggedIn ? <UserMenu /> : <AuthNav />}
     </header>
   </AppBar>
-);
-
-const mapStateToProps = state => ({
-  isAuthenticated: authSelectors.getIsAuthenticated(state),
-});
-
-export default connect(mapStateToProps)(AppBarNav);
-
-//export default AppBar;
+)
+};

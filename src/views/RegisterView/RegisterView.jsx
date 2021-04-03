@@ -1,41 +1,54 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import authOperations from '../../redux/auth/auth-operations';
 import styles from './RegisterView.module.css';
 import Slide from '@material-ui/core/Slide';
 
-// const styles = {
-//   form: {
-//     width: 320,
-//   },
-//   label: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     marginBottom: 15,
-//   },
+// const mapDispatchToProps = {
+//   onRegister: authOperations.register,
 // };
 
-class RegisterView extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
+// export default connect(null, mapDispatchToProps)(RegisterView);
+
+export default function RegisterView() {
+  // state = {
+  //   name: '',
+  //   email: '',
+  //   password: '',
+  // };
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // handleChange = ({ target: { name, value } }) => {
+  //   this.setState({ [name]: value });
+  // };
+  const handleChangeName = ({ target }) => {
+    setName(target.value);
+  };
+  const handleChangeEmail = ({ target }) => {
+    setEmail(target.value);
+  };
+  const handleChangePassword = ({ target }) => {
+    setPassword(target.value);
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = e => {
+  // handleSubmit = e => {
+  //   e.preventDefault();
+  //   onRegister(this.state);
+  //   this.setState({ name: '', email: '', password: '' });
+  // };  
+  //   const { name, email, password } = this.state;
+  const handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onRegister(this.state);
+    dispatch(authOperations.register({ name, email, password }));
 
-    this.setState({ name: '', email: '', password: '' });
+    setName('');
+    setEmail('');
+    setPassword('');
   };
-
-  render() {
-    const { name, email, password } = this.state;
 
     return (
       <div className={styles.container}>
@@ -44,7 +57,7 @@ class RegisterView extends Component {
           </Slide>
 
         <form
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
           className={styles.form}
           autoComplete="off"
         >
@@ -56,7 +69,7 @@ class RegisterView extends Component {
               type="text"
               name="name"
               value={name}
-              onChange={this.handleChange}
+              onChange={handleChangeName}
             />
 
           <label className={styles.label}>
@@ -67,7 +80,7 @@ class RegisterView extends Component {
               type="email"
               name="email"
               value={email}
-              onChange={this.handleChange}
+              onChange={handleChangeEmail}
             />
 
           <label className={styles.label}>
@@ -78,7 +91,7 @@ class RegisterView extends Component {
               type="password"
               name="password"
               value={password}
-              onChange={this.handleChange}
+              onChange={handleChangePassword}
             />
 
           <button className={styles.button} type="submit">Register</button>
@@ -86,11 +99,7 @@ class RegisterView extends Component {
       </div>
     );
   }
-}
 
-const mapDispatchToProps = {
-  onRegister: authOperations.register,
-};
 
-export default connect(null, mapDispatchToProps)(RegisterView);
+
 

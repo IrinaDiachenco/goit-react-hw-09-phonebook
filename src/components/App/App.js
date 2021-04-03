@@ -2,15 +2,11 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { Switch } from 'react-router-dom';
 import AppBar from '../AppBar/AppBar';
 import Container from '../Container/Container';
-// import HomeView from '../../views/HomeView/HomeView';
-// import RegisterView from '../../views/RegisterView/RegisterView';
-// import LoginView from '../../views/LoginView/LoginView';
-// import ContactsView from '../../views/ContactsView/ContactsView';
 import { useDispatch } from 'react-redux';
 import authOperations from '../../redux/auth/auth-operations';
 import PrivateRoute from '../Route/PrivatRoute';
 import PublicRoute from '../Route/PublicRoute';
-import Loader from 'react-loader-spinner';
+import Loader from '../Loader/Loader';
 
 const HomeView = lazy(() => import('../../views/HomeView/HomeView'));
 const RegisterView = lazy(() => import('../../views/RegisterView/RegisterView'));
